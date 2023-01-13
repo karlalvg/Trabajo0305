@@ -57,4 +57,22 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         }
     }
 
+    @Override
+    public boolean BuscarCodigo(int codigo) {
+        
+        boolean retorno = false;
+        for (var empleado : this.empleadoList) {
+            if (codigo == empleado.getCodigo()) {
+                retorno = true;
+              
+
+            }
+        }
+        return retorno;
+    }
 }
+   
+        
+    
+
+

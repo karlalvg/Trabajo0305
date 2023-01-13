@@ -26,40 +26,51 @@ public class EmpleadoControl {
         this.empleadoServiceImpl = new EmpleadoServiceImpl();
     }
 
-    public String crear(String[] data) {
-        var retorno = "No se puede crear:";
-        var nombre = data[0];
-        var tituloUniversitario = data[1];
-        var horasDiariasTrabajadas = Integer.valueOf(data[2]).intValue();
-        var horasMensuales = Integer.valueOf(data[3]).intValue();
-        var costoHoras = Double.valueOf(data[4]).doubleValue();
-        var numeroActividadesMes = Integer.valueOf(data[5]).intValue();
-        var departamento = this.departamentoServiceImpl.DepartamentoCodigo(Integer.valueOf(data[6]));
-        var genero = data[7];
-        var codigo = Integer.valueOf(data[8]).intValue();
+    public String crear(String[] data) throws Exception {
 
-        if (horasDiariasTrabajadas < 0) {
-            retorno += " El numero debe ser mayor a 0 ";
-        } else {
-            if (horasMensuales <= 0 || horasMensuales > 160) {
-                retorno += " El numero de horas es incorrecto ";
-                JOptionPane.showMessageDialog(null, "El numero de horas ser mayor que cero", "Error",JOptionPane.WARNING_MESSAGE);
+        try {
+
+            var retorno = "No se puede crear:";
+            var nombre = data[0];
+            var tituloUniversitario = data[1];
+            var horasDiariasTrabajadas = Integer.valueOf(data[2]).intValue();
+            var horasMensuales = Integer.valueOf(data[3]).intValue();
+            var costoHoras = Double.valueOf(data[4]).doubleValue();
+            var numeroActividadesMes = Integer.valueOf(data[5]).intValue();
+            var departamento = this.departamentoServiceImpl.DepartamentoCodigo(Integer.valueOf(data[6]));
+            var genero = data[7];
+            var codigo = Integer.valueOf(data[8]).intValue();
+
+            if (horasDiariasTrabajadas < 0) {
+                retorno += " El numero debe ser mayor a 0 ";
             } else {
-                if (costoHoras < 0) {
-                    retorno += " El costo debe ser mayor a 0";
+                if (horasMensuales <= 0 || horasMensuales > 160) {
+                    retorno += " El numero de horas es incorrecto ";
+                    JOptionPane.showMessageDialog(null, "El numero de horas ser mayor que cero", "Error", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    if (numeroActividadesMes < 0) {
-                        retorno += " Las actividades debe ser mayor a 0";
+                    if (costoHoras < 0) {
+                        retorno += " El costo debe ser mayor a 0";
                     } else {
-                        if (departamento == null) {
-                            retorno += " Empresa no registrada ";
+                        if (numeroActividadesMes < 0) {
+                            retorno += " Las actividades debe ser mayor a 0";
                         } else {
-                            var empleado = new Empleado(nombre, tituloUniversitario, 
-                                    horasDiariasTrabajadas, horasMensuales, costoHoras, 
-                                    numeroActividadesMes, departamento, genero, codigo);
-                            this.empleadoServiceImpl.crear(empleado);
-                            retorno = "Creado correctamente ";
-                            JOptionPane.showMessageDialog(null, "Empleado Creado Exitosamente");
+                            if (departamento == null) {
+                                retorno += " Empresa no registrada ";
+                            } else {
+                                var empleado = new Empleado(nombre, tituloUniversitario,
+                                        horasDiariasTrabajadas, horasMensuales, costoHoras,
+                                        numeroActividadesMes, departamento, genero, codigo);
+
+                                if (this.codigoExiste(codigo)) {
+                                    throw new RuntimeException("Código existe");
+                                } else {
+
+                                    this.empleadoServiceImpl.crear(empleado);
+
+                                    retorno = "Creado correctamente ";
+                                    JOptionPane.showMessageDialog(null, "Empleado Creado Exitosamente");
+                                }
+                            }
 
                         }
 
@@ -68,8 +79,16 @@ public class EmpleadoControl {
                 }
 
             }
-
+            return retorno;
+        } catch (NumberFormatException e1) {
+            throw new NumberFormatException("Error al convertir el formato");
         }
+
+    }
+
+    public boolean codigoExiste(int codigo) {
+
+        var retorno = this.empleadoServiceImpl.BuscarCodigo(codigo);
 
         return retorno;
     }
@@ -101,8 +120,8 @@ public class EmpleadoControl {
                         if (departamento == null) {
                             retorno += " Empresa no registrada ";
                         } else {
-                            var empleado = new Empleado(nombre, tituloUniversitario, 
-                                    horasDiariasTrabajadas, horasMensuales, costoHoras, 
+                            var empleado = new Empleado(nombre, tituloUniversitario,
+                                    horasDiariasTrabajadas, horasMensuales, costoHoras,
                                     numeroActividadesMes, departamento, genero, codigo);
                             this.empleadoServiceImpl.modificar(empleado, codigo);
                             retorno = "Creado correctamente ";
@@ -122,7 +141,7 @@ public class EmpleadoControl {
     }
 
     public void eliminar(String codigos) {
-        
+
         var codigo = Integer.valueOf(codigos).intValue();
         this.empleadoServiceImpl.eliminar(codigo);
 

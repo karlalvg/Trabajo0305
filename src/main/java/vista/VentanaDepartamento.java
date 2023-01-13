@@ -391,9 +391,17 @@ public class VentanaDepartamento extends javax.swing.JInternalFrame {
         data[6] = this.txtDia.getText();
         data[7] = this.jTextCodigoEmpresa.getText(); //codifgo empresa
         data[8] = this.jTextCodigoDepartamento.getText(); // codigo departamento 
-        this.departamentoControl.crear(data);
+        //this.departamentoControl.crear(data);
         
-
+ try {
+            this.departamentoControl.crear(data);
+            this.ActualizarTabla();
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(this, e1.getMessage(), "Error en la creación", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     private void jButtonMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarActionPerformed

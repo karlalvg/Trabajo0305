@@ -21,5 +21,7 @@ public interface EmpresaService {
     public void eliminar(int codigo);
 
     public List<Empresa> listar();
+    
+    public boolean BuscarCodigo(int codigo);
 
 }

@@ -73,4 +73,19 @@ public class DepartamentoServiceImpl implements DepartamentoService {
         
     }
 
+    @Override
+    public boolean BuscarCodigo(int codigo) {
+        boolean retorno = false;
+        for (var departamento : this.departamentoList) {
+            if (codigo == departamento.getCodigo()) {
+                retorno = true;
+              
+
+            }
+        }
+        return retorno;
+        
+        
+    }
+
 }

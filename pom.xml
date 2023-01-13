@@ -18,5 +18,5 @@
         <maven.compiler.target>11</maven.compiler.target>
         <exec.mainClass>ups.edu.ec.poo.unidad03.ooms.PooUnidad03Ooms</exec.mainClass>
     </properties>
-    <name>trabajo0305</name>
+    <name>trabajo0401</name>
 </project>

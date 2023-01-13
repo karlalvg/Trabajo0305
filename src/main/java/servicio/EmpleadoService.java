@@ -19,4 +19,7 @@ public interface EmpleadoService {
     public void eliminar(int codigo);
 
     public List<Empleado> listar();
+    
+    public boolean BuscarCodigo(int codigo);
+    
 }

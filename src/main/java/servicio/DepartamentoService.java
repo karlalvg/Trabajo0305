@@ -22,5 +22,7 @@ public interface DepartamentoService {
     public List<Departamento> listar();
 
     public Departamento DepartamentoCodigo(int codigo);
+    
+     public boolean BuscarCodigo(int codigo);
 
 }

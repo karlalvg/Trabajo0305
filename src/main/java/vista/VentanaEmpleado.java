@@ -461,7 +461,14 @@ public class VentanaEmpleado extends javax.swing.JInternalFrame {
         }
         data[8] = this.jTextCodigoEmpleado.getText();
 
-        System.out.println(this.empleadoControl.crear(data));
+        //System.out.println(this.empleadoControl.crear(data));
+        
+         try {
+            this.empleadoControl.crear(data);
+            this.actualizarTabla();
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(this, e1.getMessage(), "Error en la creación", JOptionPane.ERROR_MESSAGE);
+        }
         
 
 

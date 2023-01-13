@@ -349,7 +349,13 @@ public class VentanaEmpresa extends javax.swing.JInternalFrame {
         data[6] = this.jTextField7.getText();
         data[7] = this.jTextCodigo1.getText();
 
-        this.empresaControl.crear(data);
+       // this.empresaControl.crear(data);
+         try {
+            this.empresaControl.crear(data);
+            this.ActualizarTabla();
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(this, e1.getMessage(), "Error en la creación", JOptionPane.ERROR_MESSAGE);
+        }
         
 
     }//GEN-LAST:event_GuardarButtonActionPerformed

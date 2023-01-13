@@ -67,4 +67,17 @@ public class EmpresaServiceImpl implements EmpresaService {
         return retorno;
     }
 
+    @Override
+    public boolean BuscarCodigo(int codigo) {
+          boolean retorno = false;
+        for (var empresa : this.empresaList) {
+            if (codigo == empresa.getCodigo()) {
+                retorno = true;
+              
+
+            }
+        }
+        return retorno;
+    }
+
 }

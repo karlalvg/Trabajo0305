@@ -21,46 +21,58 @@ public class DepartamentoControl {
     private DepartamentoServiceImpl departamentoServiceImpl = new DepartamentoServiceImpl();
     private EmpresaServiceImpl empresaServiceImpl = new EmpresaServiceImpl();
 
-    public String crear(String[] data) {
-        var retorno = "No se puede crear ";
+    public String crear(String[] data) throws Exception {
+        
+        try {
+            var retorno = "No se puede crear ";
 
-        var nombre = data[0];
-        var jefeDepartamental = data[1];
-        var sueldosDepar = Double.valueOf(data[2]).doubleValue();;
-        var numeroEmpleados = Integer.valueOf(data[3]).intValue();
-        var year = Integer.valueOf(data[4]).intValue();
-        var mes = Integer.valueOf(data[5]).intValue();
-        var dia = Integer.valueOf(data[6]).intValue();
-        var empresa = this.empresaServiceImpl.EmpresaCodigo(Integer.valueOf(data[7]));
-        var codigo = Integer.valueOf(data[8]).intValue();
+            var nombre = data[0];
+            var jefeDepartamental = data[1];
+            var sueldosDepar = Double.valueOf(data[2]).doubleValue();;
+            var numeroEmpleados = Integer.valueOf(data[3]).intValue();
+            var year = Integer.valueOf(data[4]).intValue();
+            var mes = Integer.valueOf(data[5]).intValue();
+            var dia = Integer.valueOf(data[6]).intValue();
+            var empresa = this.empresaServiceImpl.EmpresaCodigo(Integer.valueOf(data[7]));
+            var codigo = Integer.valueOf(data[8]).intValue();
+            
+            
+            
 
-        if (sueldosDepar < 0) {
-            retorno += " Los sueldos debe ser mayor a 0 ";
-        } else {
-            if (numeroEmpleados <0) {
-                retorno += " El numero de empleados debe ser mayor a 0 ";
-                JOptionPane.showMessageDialog(null, "El numero de empleados ser mayor que cero", "Error",JOptionPane.WARNING_MESSAGE);
+            if (sueldosDepar < 0) {
+                retorno += " Los sueldos debe ser mayor a 0 ";
             } else {
-                if (year > LocalDate.now().getYear()) {
-                    retorno += " El año no es valido ";
+                if (numeroEmpleados < 0) {
+                    retorno += " El numero de empleados debe ser mayor a 0 ";
+                    JOptionPane.showMessageDialog(null, "El numero de empleados ser mayor que cero", "Error", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    if (mes < 1 || mes > 12) {
-                        retorno += " El mes no es valido ";
+                    if (year > LocalDate.now().getYear()) {
+                        retorno += " El año no es valido ";
                     } else {
-                        if (dia < 0 || dia > 31) {
-                            retorno += " El dia no es valido ";
+                        if (mes < 1 || mes > 12) {
+                            retorno += " El mes no es valido ";
                         } else {
-                            if (empresa == null) {
-                                retorno += " Empresa no registrada ";
+                            if (dia < 0 || dia > 31) {
+                                retorno += " El dia no es valido ";
                             } else {
-                                var departamento = new Departamento(nombre, 
-                                jefeDepartamental,sueldosDepar, numeroEmpleados, 
-                                        LocalDate.of(year, mes, dia), empresa, codigo);
-                                this.departamentoServiceImpl.crear(departamento);
-                                retorno = "Creado Satisfactoriamente ";
-                                JOptionPane.showMessageDialog(null, "Departamento Creado Exitosamente");
-                                
-                                
+                                if (empresa == null) {
+                                    retorno += " Empresa no registrada ";
+                                } else {
+                                    var departamento = new Departamento(nombre,
+                                            jefeDepartamental, sueldosDepar, numeroEmpleados,
+                                            LocalDate.of(year, mes, dia), empresa, codigo);
+                                    
+                                    
+                                     if (this.codigoExiste(codigo)) {
+                                    throw new RuntimeException("Código existe");
+                                    } else {
+                                    
+                                    this.departamentoServiceImpl.crear(departamento);
+                                    retorno = "Creado Satisfactoriamente ";
+                                    JOptionPane.showMessageDialog(null, "Departamento Creado Exitosamente");
+
+                                     }
+                                }
 
                             }
 
@@ -69,9 +81,33 @@ public class DepartamentoControl {
                     }
 
                 }
-
             }
+            
+           
+                
+              
+            return retorno;
+
         }
+        
+        catch (NumberFormatException e1) {
+            throw new NumberFormatException("Error al convertir el formato");
+        }
+        
+
+    }
+
+    public boolean codigoExiste(int codigo) {
+        
+        
+      
+        
+        var retorno=this.departamentoServiceImpl.BuscarCodigo(codigo);
+        
+        
+        
+        
+        
 
         return retorno;
     }
@@ -108,7 +144,7 @@ public class DepartamentoControl {
                             if (empresa == null) {
                                 retorno += " Empresa no registrada ";
                             } else {
-                                var departamento = new Departamento(nombre, jefeDepartamental, 
+                                var departamento = new Departamento(nombre, jefeDepartamental,
                                         sueldosDepar, numeroEmpleados, LocalDate.of(year, mes, dia), empresa, codigo);
                                 this.departamentoServiceImpl.modificar(departamento, modificar);
                                 retorno = "Modificado Satisfactoriamente ";
